@@ -24,6 +24,8 @@ This application uses the following technologies:
 4. Bootstrap framework.
 5. NodeJS runtime.
 
+![request flow](src/assets/1.png)
+
 ## Change Log
 <!-- Use this area to document the iterative changes made to your application as each feature is successfully implemented. Use time stamps. Here's an example:
 
