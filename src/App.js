@@ -24,7 +24,7 @@ class App extends Component {
       });
 
       let cityData = await axios.get(
-        `https://eu1.locationiq.com/v1/search.php?key=pk.6cc59fcee1f602355720267e7d74f0c4&q=${this.state.city}&format=json`
+        `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_KEY}&q=${this.state.city}&format=json`
       );
 
       this.setState({
