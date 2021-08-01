@@ -11,35 +11,43 @@ class App extends Component {
     this.state = {
       city: "",
       link: "",
+      errorDisplay: false,
     };
   }
 
   getData = async (event) => {
     event.preventDefault();
 
-    await this.setState({
-      city: event.target.cityName.value,
-    });
+    try {
+      await this.setState({
+        city: event.target.cityName.value,
+      });
 
-    let cityData = await axios.get(
-      `https://eu1.locationiq.com/v1/search.php?key=pk.6cc59fcee1f602355720267e7d74f0c4&q=${this.state.city}&format=json`
-    );
+      let cityData = await axios.get(
+        `https://eu1.locationiq.com/v1/search.php?key=pk.6cc59fcee1f602355720267e7d74f0c4&q=${this.state.city}&format=json`
+      );
 
-    this.setState({
-      name: cityData.data[0].display_name,
-      lon: cityData.data[0].lon,
-      lat: cityData.data[0].lat,
-    });
+      this.setState({
+        name: cityData.data[0].display_name,
+        lon: cityData.data[0].lon,
+        lat: cityData.data[0].lat,
+      });
 
-    let mapData = await axios.get(
-      `https://maps.locationiq.com/v3/staticmap?key=pk.6cc59fcee1f602355720267e7d74f0c4&center=${this.state.lat},${this.state.lon}&markers=icon:large-red-cutout|${this.state.lat},${this.state.lon}`
-    );
+      let mapData = await axios.get(
+        `https://maps.locationiq.com/v3/staticmap?key=pk.6cc59fcee1f602355720267e7d74f0c4&center=${this.state.lat},${this.state.lon}&markers=icon:large-red-cutout|${this.state.lat},${this.state.lon}`
+      );
 
-    this.setState({
-      link: mapData.config.url,
-    });
-
-    console.log(mapData.config.url);
+      this.setState({
+        link: mapData.config.url,
+      });
+    } catch (err) {
+      console.log(err.response);
+      this.setState({
+        errorDisplay: true,
+        errorStatus: err.response.status,
+        errorText: err.response.data.error,
+      });
+    }
   };
 
   render() {
@@ -51,8 +59,7 @@ class App extends Component {
         <Row className="mb-4">
           <Explore getData={this.getData} />
         </Row>
-
-        {this.state.link ? (
+        {!this.state.errorDisplay ? (
           <Row>
             <Col>
               <h1>The city you entered : {this.state.name}</h1>
@@ -60,11 +67,14 @@ class App extends Component {
               <h2>The Latitude : {this.state.lat}</h2>
             </Col>
             <Col>
-              <img src={this.state.link} alt="map" />
+              {this.state.link ? <img src={this.state.link} alt="map" /> : ""}
             </Col>
           </Row>
         ) : (
-          ""
+          <>
+            <h1>Error:{this.state.errorStatus}</h1>
+            <h2>{this.state.errorText}</h2>
+          </>
         )}
       </Container>
     );
