@@ -10,6 +10,7 @@ class App extends Component {
 
     this.state = {
       city: "",
+      link: "",
     };
   }
 
@@ -29,10 +30,16 @@ class App extends Component {
       lon: cityData.data[0].lon,
       lat: cityData.data[0].lat,
     });
-    console.log(cityData.data[0]);
-    console.log(this.state.name);
-    console.log(this.state.lat);
-    console.log(this.state.lon);
+
+    let mapData = await axios.get(
+      `https://maps.locationiq.com/v3/staticmap?key=pk.6cc59fcee1f602355720267e7d74f0c4&center=${this.state.lat},${this.state.lon}&markers=icon:large-red-cutout|${this.state.lat},${this.state.lon}`
+    );
+
+    this.setState({
+      link: mapData.config.url,
+    });
+
+    console.log(mapData.config.url);
   };
 
   render() {
@@ -45,11 +52,16 @@ class App extends Component {
           <Explore getData={this.getData} />
         </Row>
 
-        {this.state.name ? (
+        {this.state.link ? (
           <Row>
-            <h1>The city you entered : {this.state.name}</h1>
-            <h2>The longitude : {this.state.lon}</h2>
-            <h2>The Latitude : {this.state.lat}</h2>
+            <Col>
+              <h1>The city you entered : {this.state.name}</h1>
+              <h2>The longitude : {this.state.lon}</h2>
+              <h2>The Latitude : {this.state.lat}</h2>
+            </Col>
+            <Col>
+              <img src={this.state.link} alt="map" />
+            </Col>
           </Row>
         ) : (
           ""
