@@ -10,8 +10,11 @@ class App extends Component {
 
     this.state = {
       city: "",
-      link: "",
+      link: null,
       errorDisplay: false,
+      weatherError: false,
+      weatherText: "",
+      weatherStrings: [],
     };
   }
 
@@ -32,9 +35,10 @@ class App extends Component {
         lon: cityData.data[0].lon,
         lat: cityData.data[0].lat,
       });
+      console.log(cityData);
 
       let mapData = await axios.get(
-        `https://maps.locationiq.com/v3/staticmap?key=pk.6cc59fcee1f602355720267e7d74f0c4&center=${this.state.lat},${this.state.lon}&markers=icon:large-red-cutout|${this.state.lat},${this.state.lon}`
+        `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_KEY}&center=${this.state.lat},${this.state.lon}&markers=icon:large-red-cutout|${this.state.lat},${this.state.lon}`
       );
 
       this.setState({
@@ -46,6 +50,31 @@ class App extends Component {
         errorDisplay: true,
         errorStatus: err.response.status,
         errorText: err.response.data.error,
+      });
+    }
+
+    this.getWeather();
+  };
+
+  getWeather = async () => {
+    try {
+      let weatherData = await axios.get(
+        `http://localhost:3010/weather?q=${this.state.city}&lon=${this.state.lon}&lat=${this.state.lat}`
+      );
+
+      let arrayOfStrings = weatherData.data.map((element) => {
+        return `The Date is : ${element.date} and the description is : ${element.description}`;
+      });
+
+      this.setState({
+        weather: weatherData.data,
+        weatherStrings: arrayOfStrings,
+      });
+    } catch (err) {
+      console.log(err);
+      this.setState({
+        weatherError: true,
+        weatherText: "There is an Error",
       });
     }
   };
@@ -60,20 +89,44 @@ class App extends Component {
           <Explore getData={this.getData} />
         </Row>
         {!this.state.errorDisplay ? (
-          <Row>
-            <Col>
+          <Row className="mb-4">
+            <Row>
               <h1>The city you entered : {this.state.name}</h1>
               <h2>The longitude : {this.state.lon}</h2>
               <h2>The Latitude : {this.state.lat}</h2>
-            </Col>
-            <Col>
-              {this.state.link ? <img src={this.state.link} alt="map" /> : ""}
-            </Col>
+            </Row>
+            <Row>
+              {this.state.link ? (
+                <img
+                  style={{ height: "40rem", width: "40rem" }}
+                  src={this.state.link}
+                  alt="map"
+                />
+              ) : (
+                ""
+              )}
+            </Row>
           </Row>
         ) : (
           <>
             <h1>Error:{this.state.errorStatus}</h1>
             <h2>{this.state.errorText}</h2>
+          </>
+        )}
+        {!this.state.weatherError ? (
+          <Row className="mb-4">
+            <Row>
+              <h1>The Weather Status :</h1>
+            </Row>
+            <Col>
+              <h2>{this.state.weatherStrings[0]}</h2>
+              <h2>{this.state.weatherStrings[1]}</h2>
+              <h2>{this.state.weatherStrings[2]}</h2>
+            </Col>
+          </Row>
+        ) : (
+          <>
+            <h1>Error:{this.state.weatherText}</h1>
           </>
         )}
       </Container>

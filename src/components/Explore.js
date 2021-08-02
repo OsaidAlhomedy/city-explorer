@@ -3,6 +3,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
 class Explore extends Component {
+  
   render() {
     return (
       <Form onSubmit={this.props.getData}>
