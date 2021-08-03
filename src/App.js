@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Container, Row } from "react-bootstrap";
 import Explore from "./components/Explore";
 import axios from "axios";
+import Movies from "./components/Movies";
 
 class App extends Component {
   constructor(props) {
@@ -53,6 +54,7 @@ class App extends Component {
     }
 
     this.getWeather();
+    this.getMovies();
   };
 
   getWeather = async () => {
@@ -84,6 +86,23 @@ class App extends Component {
       arrayStrings: stringArray,
     });
     console.log(this.state.arrayStrings);
+  };
+
+  getMovies = async () => {
+    try {
+      let weatherData = await axios.get(
+        `http://localhost:3010/movies?q=${this.state.city}`
+      );
+
+      this.setState({
+        moviesArr: weatherData.data,
+      });
+    } catch (err) {
+      this.setState({
+        movieError: true,
+        movieText: "There is an Error",
+      });
+    }
   };
 
   render() {
@@ -135,6 +154,14 @@ class App extends Component {
           {this.state.arrayStrings
             ? this.state.arrayStrings.map((item) => {
                 return <h2>{item}</h2>;
+              })
+            : null}
+        </Row>
+        <Row className="mb-4">
+          {this.state.moviesArr
+            ? this.state.moviesArr.map((item) => {
+                console.log(item);
+                return <Movies item={item} />;
               })
             : null}
         </Row>
