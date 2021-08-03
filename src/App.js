@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 import Explore from "./components/Explore";
 import axios from "axios";
 
@@ -14,7 +14,8 @@ class App extends Component {
       errorDisplay: false,
       weatherError: false,
       weatherText: "",
-      weatherStrings: [],
+      arrayStrings: [],
+      weather: [],
     };
   }
 
@@ -35,7 +36,6 @@ class App extends Component {
         lon: cityData.data[0].lon,
         lat: cityData.data[0].lat,
       });
-      console.log(cityData);
 
       let mapData = await axios.get(
         `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_KEY}&center=${this.state.lat},${this.state.lon}&markers=icon:large-red-cutout|${this.state.lat},${this.state.lon}`
@@ -45,7 +45,6 @@ class App extends Component {
         link: mapData.config.url,
       });
     } catch (err) {
-      console.log(err.response);
       this.setState({
         errorDisplay: true,
         errorStatus: err.response.status,
@@ -62,21 +61,29 @@ class App extends Component {
         `http://localhost:3010/weather?q=${this.state.city}&lon=${this.state.lon}&lat=${this.state.lat}`
       );
 
-      let arrayOfStrings = weatherData.data.map((element) => {
-        return `The Date is : ${element.date} and the description is : ${element.description}`;
-      });
-
       this.setState({
         weather: weatherData.data,
-        weatherStrings: arrayOfStrings,
       });
     } catch (err) {
-      console.log(err);
       this.setState({
         weatherError: true,
         weatherText: "There is an Error",
       });
     }
+    this.stringHandler(this.state.weather);
+  };
+
+  stringHandler = (data) => {
+    const stringArray = [];
+    for (let i = 0; i < data.length; i++) {
+      stringArray.push(
+        `on ${data[i].date} the weather status : Low of ${data[i].low}, high of ${data[i].high} with ${data[i].description}`
+      );
+    }
+    this.setState({
+      arrayStrings: stringArray,
+    });
+    console.log(this.state.arrayStrings);
   };
 
   render() {
@@ -118,17 +125,19 @@ class App extends Component {
             <Row>
               <h1>The Weather Status :</h1>
             </Row>
-            <Col>
-              <h2>{this.state.weatherStrings[0]}</h2>
-              <h2>{this.state.weatherStrings[1]}</h2>
-              <h2>{this.state.weatherStrings[2]}</h2>
-            </Col>
           </Row>
         ) : (
           <>
             <h1>Error:{this.state.weatherText}</h1>
           </>
         )}
+        <Row className="mb-4">
+          {this.state.arrayStrings
+            ? this.state.arrayStrings.map((item) => {
+                return <h2>{item}</h2>;
+              })
+            : null}
+        </Row>
       </Container>
     );
   }
