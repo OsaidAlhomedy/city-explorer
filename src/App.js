@@ -91,7 +91,7 @@ class App extends Component {
   getMovies = async () => {
     try {
       let weatherData = await axios.get(
-        `http://localhost:3010/movies?q=${this.state.city}`
+        `${process.env.REACT_APP_BACKEND_DOMAIN}/movies?q=${this.state.city}`
       );
 
       this.setState({
