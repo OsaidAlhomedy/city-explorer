@@ -5,7 +5,7 @@ import Card from "react-bootstrap/Card";
 class Movies extends Component {
   render() {
     return (
-      <Card style={{ width: "18rem" }}>
+      <Card style={{ width: "18rem" }} className="mb-4 ml-2 mr-2">
         <Card.Img variant="top" src={this.props.item.url} />
         <Card.Body>
           <Card.Title>{this.props.item.title}</Card.Title>

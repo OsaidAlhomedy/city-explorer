@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Container, Row } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import Explore from "./components/Explore";
 import axios from "axios";
 import Movies from "./components/Movies";
+import WeatherDay from "./components/WeatherDay";
 
 class App extends Component {
   constructor(props) {
@@ -79,7 +80,7 @@ class App extends Component {
     const stringArray = [];
     for (let i = 0; i < data.length; i++) {
       stringArray.push(
-        `on ${data[i].date} the weather status : Low of ${data[i].low}, high of ${data[i].high} with ${data[i].description}`
+        `${data[i].date} the weather status : Low of ${data[i].low}, high of ${data[i].high} with ${data[i].description}`
       );
     }
     this.setState({
@@ -108,15 +109,17 @@ class App extends Component {
   render() {
     return (
       <Container className="">
-        <Row className="mb-4">
-          <h1>City Explorer</h1>
+        <Row className="mb-4" sm={12}>
+          <Col className="d-flex justify-content-center mt-3" sm={12}>
+            <h1>City Explorer</h1>
+          </Col>
         </Row>
         <Row className="mb-4">
           <Explore getData={this.getData} />
         </Row>
         {!this.state.errorDisplay ? (
           <Row className="mb-4">
-            <Row>
+            <Row className="mb-3">
               <h1>The city you entered : {this.state.name}</h1>
               <h2>The longitude : {this.state.lon}</h2>
               <h2>The Latitude : {this.state.lat}</h2>
@@ -151,13 +154,14 @@ class App extends Component {
           </>
         )}
         <Row className="mb-4">
-          {this.state.arrayStrings
-            ? this.state.arrayStrings.map((item) => {
-                return <h2>{item}</h2>;
-              })
-            : null}
+          {this.state.arrayStrings ? (
+            <WeatherDay arrayStrings={this.state.arrayStrings} />
+          ) : null}
         </Row>
         <Row className="mb-4">
+          <h1>Movies Related :</h1>
+        </Row>
+        <Row className="justify-content-around">
           {this.state.moviesArr
             ? this.state.moviesArr.map((item) => {
                 console.log(item);
