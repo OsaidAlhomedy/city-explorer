@@ -36,7 +36,7 @@ Abdulqader Al-Omari , Ghadeer Alkhasawneh
 
 ## Time Estimates
 
-Name of feature: Back end development
+Name of feature: Back-end development
 
 Estimate of time needed to complete: 2 hours
 
@@ -48,7 +48,7 @@ Actual time needed to complete: 5 hours
 
 ---
 
-Name of feature: Front end development
+Name of feature: Front-end development
 
 Estimate of time needed to complete: 2 hours
 
@@ -57,3 +57,27 @@ Start time: 10:00pm
 Finish time: 2:00am
 
 Actual time needed to complete: 4 hours
+
+---
+
+Name of feature: Refactoring the Back-end code
+
+Estimate of time needed to complete: 1 hours
+
+Start time: 2:00pm
+
+Finish time: 2:30am
+
+Actual time needed to complete: 30 minutes
+
+---
+
+Name of feature: Refactoring the Front-end code
+
+Estimate of time needed to complete: 1 hours
+
+Start time: 12:30pm
+
+Finish time: 1:30am
+
+Actual time needed to complete: 1 hours
