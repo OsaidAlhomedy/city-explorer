@@ -4,6 +4,7 @@ import { Container, Row } from "react-bootstrap";
 import Explore from "./components/Explore";
 import axios from "axios";
 import Movies from "./components/Movies";
+import WeatherDay from "./components/WeatherDay";
 
 class App extends Component {
   constructor(props) {
@@ -151,11 +152,9 @@ class App extends Component {
           </>
         )}
         <Row className="mb-4">
-          {this.state.arrayStrings
-            ? this.state.arrayStrings.map((item) => {
-                return <h2>{item}</h2>;
-              })
-            : null}
+          {this.state.arrayStrings ? (
+            <WeatherDay arrayStrings={this.state.arrayStrings} />
+          ) : null}
         </Row>
         <Row className="mb-4">
           {this.state.moviesArr
