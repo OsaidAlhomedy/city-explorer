@@ -53,7 +53,7 @@ class App extends Component {
         errorText: err.response.data.error,
       });
     }
-
+    console.log(this.state.lon, this.state.lat);
     this.getWeather();
     this.getMovies();
   };
@@ -86,7 +86,6 @@ class App extends Component {
     this.setState({
       arrayStrings: stringArray,
     });
-    console.log(this.state.arrayStrings);
   };
 
   getMovies = async () => {
@@ -164,7 +163,6 @@ class App extends Component {
         <Row className="justify-content-around">
           {this.state.moviesArr
             ? this.state.moviesArr.map((item) => {
-                console.log(item);
                 return <Movies item={item} />;
               })
             : null}
