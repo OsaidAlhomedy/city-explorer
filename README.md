@@ -81,3 +81,15 @@ Start time: 12:30pm
 Finish time: 1:30am
 
 Actual time needed to complete: 1 hours
+
+---
+
+Name of feature: Server Storage
+
+Estimate of time needed to complete: 30 minutes
+
+Start time: 3:00pm
+
+Finish time: 3:40
+
+Actual time needed to complete: 40 minutes.
